@@ -53,9 +53,8 @@ plot(cpi ~ date, data = d, type = "l")
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 You can input a date on which the CPI should be equal to 1. The date has
-to be the first day of a month between 1988-05-01 and the month
-preceding the current month. If no date is input the CPI is equal to 1
-ni 1988-05-01
+to be between 1988-05-01 and the month preceding the current month. If
+no date is input the CPI will be equal to 1 on 1988-05-01.
 
 ``` r
 d <- vnv(date_unity = as.Date("2018-01-1"))
@@ -66,7 +65,7 @@ plot(cpi ~ date, data = d, type = "l")
 
 ### Performing CPI adjustments
 
-The package offers use of the function `cpi_convert()` to convert prices
+The package offers use of the function `vnv_convert()` to convert prices
 to a common CPI standard.
 
 ``` r
