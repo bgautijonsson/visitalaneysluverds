@@ -2,11 +2,11 @@
 
 .onLoad <- function(libname, pkgname) {
     packageStartupMessage("Downloading CPI data from Statistics Iceland and making available to internal functions. This happens once per session.")
-    vnv_dat <- vnv()
+    vnv_dat <- .vnv_onLoad()
     cpi_housing <- vnv_dat$cpi
     names(cpi_housing) <- vnv_dat$date
 
-    vnv_dat <- vnv(include_housing = FALSE)
+    vnv_dat <- .vnv_onLoad(include_housing = FALSE)
     cpi_no_housing <- vnv_dat$cpi
     names(cpi_no_housing) <- vnv_dat$date
 

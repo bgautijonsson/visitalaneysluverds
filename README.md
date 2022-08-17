@@ -21,7 +21,7 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ## Example
 
-### Downloading the CPI
+### CPI table
 
 ``` r
 library(visitalaneysluverds)
@@ -89,7 +89,6 @@ d
 ```
 
 The function `vnv_convert()` works because the package downloads CPI
-data from Statistics Iceland once per session using .onLoad and makes it
-available to internal functions and creating a helper function called
-`vnv_convert.fun()` that allow the user to use the most recent CPI data
-to compare prices.
+data from Statistics Iceland once per session and makes it available to
+internal functions, allowing the user to use the most recent CPI data to
+compare prices if needed.
