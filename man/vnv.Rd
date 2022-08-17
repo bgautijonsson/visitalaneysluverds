@@ -7,7 +7,7 @@
 vnv(date_unity = NULL, include_housing = TRUE)
 }
 \arguments{
-\item{date_unity}{A date variable of length one at which the CPI takes the value 1. Possible values are the first of each month from 1988-05-01 to the month preceding the current month.}
+\item{date_unity}{A date variable of length one at which the CPI takes the value 1. Possible values are dates between 1988-05-01 and the month preceding the current month. The input will be converted to the first of its month to match the CPI release date.}
 
 \item{include_housing}{A boolean to decide whether to include housing in the CPI}
 }
@@ -20,6 +20,6 @@ Fetch consumer price index from Statistics Iceland
 \examples{
 d <- vnv()
 d <- vnv(include_housing = FALSE)
-my_date <- as.Date("2014-01-01")
+my_date <- as.Date("2014-01-15")
 d <- vnv(date_unity = my_date)
 }

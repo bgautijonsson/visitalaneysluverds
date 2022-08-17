@@ -1,6 +1,6 @@
 #' Fetch consumer price index from Statistics Iceland
 #'
-#' @param date_unity A date variable of length one at which the CPI takes the value 1. Possible values are the first of each month from 1988-05-01 to the month preceding the current month.
+#' @param date_unity A date variable of length one at which the CPI takes the value 1. Possible values are dates between 1988-05-01 and the month preceding the current month. The input will be converted to the first of its month to match the CPI release date.
 #' @param include_housing A boolean to decide whether to include housing in the CPI
 #'
 #' @return A tibble with two columns denoting the date and the CPI at that date
@@ -9,10 +9,13 @@
 #' @examples
 #' d <- vnv()
 #' d <- vnv(include_housing = FALSE)
-#' my_date <- as.Date("2014-01-01")
+#' my_date <- as.Date("2014-01-15")
 #' d <- vnv(date_unity = my_date)
 vnv <- function(date_unity = NULL, include_housing = TRUE) {
+
+
     visitala <- if (include_housing) "CPI" else "CPILH"
+
 
     # Create the query using unicode characters for Icelandic letters
     my_query <- list(
@@ -41,6 +44,8 @@ vnv <- function(date_unity = NULL, include_housing = TRUE) {
     if (is.null(date_unity)) {
         return(out)
     } else {
+        date_unity <- lubridate::floor_date(date_unity, "month")
+
         out <- out |>
             dplyr::mutate(cpi = cpi / cpi[date == date_unity])
 

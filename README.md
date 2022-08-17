@@ -21,8 +21,11 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ## Example
 
+### Downloading the CPI
+
 ``` r
 library(visitalaneysluverds)
+#> Downloading CPI data from Statistics Iceland and making available to internal functions. This happens once per session.
 d <- vnv()
 
 d
@@ -60,3 +63,33 @@ plot(cpi ~ date, data = d, type = "l")
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+### Performing CPI adjustments
+
+The package offers use of the function `cpi_convert()` to convert prices
+to a common CPI standard.
+
+``` r
+price <- c(1, 2, 3, 4, 5)
+date <- as.Date(c("2020-01-01", "2019-01-01", "2018-01-01", "2017-01-01", "2016-01-01"))
+d <- data.frame(
+    date = date,
+    price = price
+)
+
+d$price_2020_01_01 <- vnv_convert(d$price, d$date, convert_date = as.Date("2020-01-01"))
+
+d
+#>         date price price_2020_01_01
+#> 1 2020-01-01     1         1.000000
+#> 2 2019-01-01     2         2.033766
+#> 3 2018-01-01     3         3.154432
+#> 4 2017-01-01     4         4.305155
+#> 5 2016-01-01     5         5.484473
+```
+
+The function `vnv_convert()` works because the package downloads CPI
+data from Statistics Iceland once per session using .onLoad and makes it
+available to internal functions and creating a helper function called
+`vnv_convert.fun()` that allow the user to use the most recent CPI data
+to compare prices.
