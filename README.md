@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of visitalaneysluverds is to …
+The package provides an easy way to fetch the CPI from Statistics
+Iceland.
 
 ## Installation
 
@@ -20,36 +21,42 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
 library(visitalaneysluverds)
-## basic example code
-```
+d <- vnv()
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+d
+#> # A tibble: 411 × 2
+#>    date         cpi
+#>    <date>     <dbl>
+#>  1 1988-05-01  1   
+#>  2 1988-06-01  1.03
+#>  3 1988-07-01  1.07
+#>  4 1988-08-01  1.09
+#>  5 1988-09-01  1.1 
+#>  6 1988-10-01  1.10
+#>  7 1988-11-01  1.10
+#>  8 1988-12-01  1.11
+#>  9 1989-01-01  1.13
+#> 10 1989-02-01  1.14
+#> # … with 401 more rows
+#> # ℹ Use `print(n = ...)` to see more rows
+```
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+plot(cpi ~ date, data = d, type = "l")
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-You can also embed plots, for example:
+You can input a date on which the CPI should be equal to 1. The date has
+to be the first day of a month between 1988-05-01 and the month
+preceding the current month. If no date is input the CPI is equal to 1
+ni 1988-05-01
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+``` r
+d <- vnv(date_unity = as.Date("2018-01-1"))
+plot(cpi ~ date, data = d, type = "l")
+```
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />

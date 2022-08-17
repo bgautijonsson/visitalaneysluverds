@@ -34,7 +34,8 @@ vnv <- function(date_unity = NULL, include_housing = TRUE) {
         janitor::clean_names() |>
         tidyr::separate(manudur, into = c("ar", "manudur"), sep = "M", convert = T) |>
         dplyr::mutate(manudur = stringr::str_pad(manudur, width = 2, side = "left", pad = "0"),
-                      date = paste0(ar, "-", manudur, "-01") |> lubridate::ymd()) |>
+                      date = paste0(ar, "-", manudur, "-01") |> lubridate::ymd(),
+                      visitala_neysluverds = visitala_neysluverds / 100) |>
         dplyr::select(date, cpi = visitala_neysluverds)
 
     if (is.null(date_unity)) {

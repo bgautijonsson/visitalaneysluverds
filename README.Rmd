@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of visitalaneysluverds is to ...
+
+The package provides an easy way to fetch the CPI from Statistics Iceland.
 
 ## Installation
 
@@ -31,25 +32,22 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ```{r example}
 library(visitalaneysluverds)
-## basic example code
+d <- vnv()
+
+d
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+```{r}
+plot(cpi ~ date, data = d, type = "l")
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+You can input a date on which the CPI should be equal to 1. The date has to be the first day of a month between 1988-05-01 and the month preceding the current month. If no date is input the CPI is equal to 1 ni 1988-05-01
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r}
+d <- vnv(date_unity = as.Date("2018-01-1"))
+plot(cpi ~ date, data = d, type = "l")
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
