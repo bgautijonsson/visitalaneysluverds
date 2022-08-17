@@ -13,6 +13,6 @@ vnv <- function() {
         janitor::clean_names() |>
         tidyr::separate(manudur, into = c("ar", "manudur"), sep = "M", convert = T) |>
         dplyr::mutate(manudur = stringr::str_pad(manudur, width = 2, side = "left", pad = "0"),
-                      date = stringr::str_c(ar, "-", manudur, "-01") |> lubridate::ymd()) |>
+                      dags = stringr::str_c(ar, "-", manudur, "-01") |> lubridate::ymd()) |>
         dplyr::select(-manudur, -ar, -visitala, -lidur)
 }
