@@ -4,14 +4,14 @@
 \alias{.vnv_convert_year}
 \title{Helper function to perform CPI adjustment on yearly price data}
 \usage{
-.vnv_convert_year(obs_value, obs_date, convert_date, include_housing = TRUE)
+.vnv_convert_year(obs_value, obs_date, date_unity, include_housing = TRUE)
 }
 \arguments{
 \item{obs_value}{Numeric vector. The price or value you want to convert}
 
 \item{obs_date}{Integer vector, same length as obs_value. The year at which the price/value is recorded}
 
-\item{convert_date}{Integer variable. The year at which you want the CPI to be equal to 1 i.e. the price year. If nothing is input the default value is the most recent CPI release year.}
+\item{date_unity}{Integer variable. The year at which you want the CPI to be equal to 1 i.e. the price year. If nothing is input the default value is the most recent CPI release year.}
 
 \item{include_housing}{Boolean variable. Whether to use CPI with housing included or not when adjusting for CPI.}
 }

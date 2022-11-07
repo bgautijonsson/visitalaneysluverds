@@ -4,14 +4,14 @@
 \alias{vnv_convert}
 \title{Convert prices to a common level using icelandic CPI}
 \usage{
-vnv_convert(obs_value, obs_date, convert_date = NULL, include_housing = TRUE)
+vnv_convert(obs_value, obs_date, date_unity = NULL, include_housing = TRUE)
 }
 \arguments{
 \item{obs_value}{Numeric vector. The price or value you want to convert}
 
 \item{obs_date}{Date vector/integer vector, same length as obs_value. The date/year at which the price/value is recorded}
 
-\item{convert_date}{Date/integer variable. The date/year at which you want the CPI to be equal to 1 i.e. the price date/year. If nothing is input the default value is the most recent CPI release date/year.}
+\item{date_unity}{Date/integer variable. The date/year at which you want the CPI to be equal to 1 i.e. the price date/year. If nothing is input the default value is the most recent CPI release date/year.}
 
 \item{include_housing}{Boolean variable. Whether to use CPI with housing included or not when adjusting for CPI.}
 }
@@ -29,5 +29,5 @@ This means that the CPI timeseries is only downloaded the first time this functi
 \examples{
 price <- c(1, 2, 3, 4, 5)
 date = as.Date(c("2020-01-01", "2019-01-01", "2018-01-01", "2017-01-01", "2016-01-01"))
-price_2020 <- vnv_convert(obs_value = price, obs_date = date, convert_date = as.Date("2020-01-01"))
+price_2020 <- vnv_convert(obs_value = price, obs_date = date, date_unity = as.Date("2020-01-01"))
 }

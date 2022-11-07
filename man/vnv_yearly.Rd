@@ -7,7 +7,7 @@
 vnv_yearly(year_unity = NULL, include_housing = TRUE)
 }
 \arguments{
-\item{year_unity}{An integer variable of length one at which the CPI takes the value 1. Possible values are years between 1988 and the current year.}
+\item{year_unity}{An integer variable of length one at which the CPI takes the value 1. The default is the current year. Possible values are years between 1988 and the current year.}
 
 \item{include_housing}{A boolean to decide whether to include housing in the CPI}
 }

@@ -1,6 +1,6 @@
 #' Fetch monthly consumer price index from Statistics Iceland
 #'
-#' @param date_unity A date variable of length one at which the CPI takes the value 1. Possible values are dates between 1988-05-01 and the month preceding the current month. The input will be converted to the first of its month to match the CPI release date.
+#' @param date_unity A date variable of length one at which the CPI takes the value 1. The default is the previous month. Possible values are dates between 1988-05-01 and the month preceding the current month. The input will be converted to the first of its month to match the CPI release date.
 #' @param include_housing A boolean to decide whether to include housing in the CPI
 #'
 #' @return A tibble with two columns denoting the date and the CPI at that date
@@ -39,7 +39,7 @@ vnv <- function(date_unity = NULL, include_housing = TRUE) {
 
 #' Fetch yearly price index from Statistics Iceland
 #'
-#' @param year_unity An integer variable of length one at which the CPI takes the value 1. Possible values are years between 1988 and the current year.
+#' @param year_unity An integer variable of length one at which the CPI takes the value 1. The default is the current year. Possible values are years between 1988 and the current year.
 #' @param include_housing A boolean to decide whether to include housing in the CPI
 #'
 #' @return A tibble with two columns denoting the year and the mean CPI at that year
