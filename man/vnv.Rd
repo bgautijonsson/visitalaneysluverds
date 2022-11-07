@@ -2,7 +2,7 @@
 % Please edit documentation in R/vnv.R
 \name{vnv}
 \alias{vnv}
-\title{Fetch consumer price index from Statistics Iceland}
+\title{Fetch monthly consumer price index from Statistics Iceland}
 \usage{
 vnv(date_unity = NULL, include_housing = TRUE)
 }
@@ -15,7 +15,7 @@ vnv(date_unity = NULL, include_housing = TRUE)
 A tibble with two columns denoting the date and the CPI at that date
 }
 \description{
-Fetch consumer price index from Statistics Iceland
+Fetch monthly consumer price index from Statistics Iceland
 }
 \examples{
 d <- vnv()

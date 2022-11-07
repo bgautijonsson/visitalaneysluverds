@@ -7,8 +7,8 @@
 #' This means that the CPI timeseries is only downloaded the first time this function is run -hopefully-.
 #'
 #' @param obs_value Numeric vector. The price or value you want to convert
-#' @param obs_date Date vector, same length as obs_value. The date at which the price/value is recorded
-#' @param convert_date Date variable. The date at which you want the CPI to be equal to 1 i.e. the price date. If nothing is input the default value is the most recent CPI release date.
+#' @param obs_date Date vector/integer vector, same length as obs_value. The date/year at which the price/value is recorded
+#' @param convert_date Date/integer variable. The date/year at which you want the CPI to be equal to 1 i.e. the price date/year. If nothing is input the default value is the most recent CPI release date/year.
 #' @param include_housing Boolean variable. Whether to use CPI with housing included or not when adjusting for CPI.
 #'
 #' @return Returns a numeric vector of length equal to the length of obs_value
@@ -20,11 +20,34 @@
 #' price_2020 <- vnv_convert(obs_value = price, obs_date = date, convert_date = as.Date("2020-01-01"))
 vnv_convert <- function(obs_value, obs_date, convert_date = NULL, include_housing = TRUE) {
 
+    if (all(class(obs_date) == "Date")) {
+        out <- .vnv_convert_date(obs_value, obs_date, convert_date, include_housing)
+    } else if (all(class(obs_date) %in% c("numeric", "integer"))) {
+        out <- .vnv_convert_year(obs_value, obs_date, convert_date, include_housing)
+    }
+
+    return(out)
+
+}
+
+
+#' Helper function to perform CPI adjustment on monthly price data
+#'
+#' @param obs_value Numeric vector. The price or value you want to convert
+#' @param obs_date Date vector, same length as obs_value. The date at which the price/value is recorded
+#' @param convert_date Date variable. The date at which you want the CPI to be equal to 1 i.e. the price date. If nothing is input the default value is the most recent CPI release date.
+#' @param include_housing Boolean variable. Whether to use CPI with housing included or not when adjusting for CPI.
+#'
+#' @return Returns a numeric vector of length equal to the length of obs_value
+.vnv_convert_date <- function(obs_value, obs_date, convert_date, include_housing = TRUE) {
+
     if (is.null(convert_date)) {
-        convert_date <- lubridate::as_date(Sys.Date())
+        convert_date <- lubridate::today()
         convert_date <- lubridate::floor_date(convert_date, "month")
         lubridate::month(convert_date) <- lubridate::month(convert_date) - 1
     }
+
+    obs_date <- lubridate::floor_date(obs_date, "month")
 
 
     cpi <- if (include_housing) cpi_housing else cpi_no_housing
@@ -33,6 +56,28 @@ vnv_convert <- function(obs_value, obs_date, convert_date = NULL, include_housin
 
     return(out)
 
+}
+
+
+#' Helper function to perform CPI adjustment on yearly price data
+#'
+#' @param obs_value Numeric vector. The price or value you want to convert
+#' @param obs_date Integer vector, same length as obs_value. The year at which the price/value is recorded
+#' @param convert_date Integer variable. The year at which you want the CPI to be equal to 1 i.e. the price year. If nothing is input the default value is the most recent CPI release year.
+#' @param include_housing Boolean variable. Whether to use CPI with housing included or not when adjusting for CPI.
+#'
+#' @return Returns a numeric vector of length equal to the length of obs_value
+.vnv_convert_year <- function(obs_value, obs_date, convert_date, include_housing = TRUE) {
+    if (is.null(convert_date)) {
+        convert_date <- lubridate::year(lubridate::today())
+    }
+
+
+    cpi <- if (include_housing) cpi_housing_yearly else cpi_no_housing_yearly
+
+    out <- obs_value / (cpi[as.character(obs_date)] / cpi[as.character(convert_date)])
+
+    return(out)
 
 }
 

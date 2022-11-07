@@ -2,3 +2,4 @@
 
 export(vnv)
 export(vnv_convert)
+export(vnv_yearly)
