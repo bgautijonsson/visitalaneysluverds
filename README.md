@@ -23,34 +23,35 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ### CPI table
 
+#### Monthly CPI
+
 ``` r
 library(visitalaneysluverds)
 #> Downloading CPI data from Statistics Iceland and making available to internal functions. This happens once per session.
 d <- vnv()
 
 d
-#> # A tibble: 411 × 2
+#> # A tibble: 414 × 2
 #>    date         cpi
 #>    <date>     <dbl>
-#>  1 1988-05-01  1   
-#>  2 1988-06-01  1.03
-#>  3 1988-07-01  1.07
-#>  4 1988-08-01  1.09
-#>  5 1988-09-01  1.1 
-#>  6 1988-10-01  1.10
-#>  7 1988-11-01  1.10
-#>  8 1988-12-01  1.11
-#>  9 1989-01-01  1.13
-#> 10 1989-02-01  1.14
-#> # … with 401 more rows
-#> # ℹ Use `print(n = ...)` to see more rows
+#>  1 1988-05-01 0.179
+#>  2 1988-06-01 0.185
+#>  3 1988-07-01 0.191
+#>  4 1988-08-01 0.195
+#>  5 1988-09-01 0.197
+#>  6 1988-10-01 0.197
+#>  7 1988-11-01 0.198
+#>  8 1988-12-01 0.198
+#>  9 1989-01-01 0.201
+#> 10 1989-02-01 0.204
+#> # … with 404 more rows
 ```
 
 ``` r
 plot(cpi ~ date, data = d, type = "l")
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 You can input a date on which the CPI should be equal to 1. The date has
 to be between 1988-05-01 and the month preceding the current month. If
@@ -61,9 +62,50 @@ d <- vnv(date_unity = as.Date("2018-01-1"))
 plot(cpi ~ date, data = d, type = "l")
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+#### Yearly CPI
+
+``` r
+d <- vnv_yearly()
+
+d
+#> # A tibble: 35 × 2
+#>     year   cpi
+#>    <int> <dbl>
+#>  1  1988 0.199
+#>  2  1989 0.232
+#>  3  1990 0.268
+#>  4  1991 0.286
+#>  5  1992 0.297
+#>  6  1993 0.309
+#>  7  1994 0.314
+#>  8  1995 0.319
+#>  9  1996 0.327
+#> 10  1997 0.333
+#> # … with 25 more rows
+```
+
+``` r
+plot(cpi ~ year, data = d, type = "l")
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+You can input a date on which the CPI should be equal to 1. The date has
+to be between 1988-05-01 and the month preceding the current month. If
+no date is input the CPI will be equal to 1 on 1988-05-01.
+
+``` r
+d <- vnv_yearly(year_unity = 2002)
+plot(cpi ~ year, data = d, type = "l")
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ### Performing CPI adjustments
+
+#### Monthly prices
 
 The package offers use of the function `vnv_convert()` to convert prices
 to a common CPI standard.
@@ -76,7 +118,7 @@ d <- data.frame(
     price = price
 )
 
-d$price_2020_01_01 <- vnv_convert(d$price, d$date, convert_date = as.Date("2020-01-01"))
+d$price_2020_01_01 <- vnv_convert(d$price, d$date, date_unity = as.Date("2020-01-01"))
 
 d
 #>         date price price_2020_01_01
@@ -91,3 +133,29 @@ The function `vnv_convert()` works because the package downloads CPI
 data from Statistics Iceland once per session and makes it available to
 internal functions, allowing the user to use the most recent CPI data to
 compare prices if needed.
+
+#### Yearly prices
+
+The `vnv_convert()` function detects whether the `obs_date` and
+`date_unity` variables have the class `Date` or `integer` and
+automatically performs the right type of CPI adjustmeny (monthly/yearly)
+for your data.
+
+``` r
+price <- c(1, 2, 3, 4, 5)
+year <- c(2011, 2012, 2013, 2014, 2015)
+d <- data.frame(
+    year = year,
+    price = price
+)
+
+d$price_2020 <- vnv_convert(d$price, d$year, date_unity = 2020)
+
+d
+#>   year price price_2020
+#> 1 2011     1   1.275724
+#> 2 2012     2   2.425638
+#> 3 2013     3   3.502908
+#> 4 2014     4   4.576924
+#> 5 2015     5   5.629149
+```

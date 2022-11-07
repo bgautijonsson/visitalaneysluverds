@@ -14,11 +14,24 @@
 vnv <- function(date_unity = NULL, include_housing = TRUE) {
     # After package loading this is used to prepare CPI data from the package environment as a tibble
 
+    if (is.null(date_unity)) {
+        date_unity <- lubridate::today()
+        date_unity <- lubridate::floor_date(date_unity, "month")
+        lubridate::month(date_unity) <- lubridate::month(date_unity) - 1
+    }
+
+
     cpi <- if (include_housing) cpi_housing else cpi_no_housing
+
+    cpi <- cpi / cpi[names(cpi) == as.character(date_unity)]
+
+
     out <- tibble::tibble(
-        date = names(cpi),
+        date = lubridate::as_date(names(cpi)),
         cpi = unname(cpi)
     )
+
+
 
     out
 
@@ -40,9 +53,16 @@ vnv <- function(date_unity = NULL, include_housing = TRUE) {
 vnv_yearly <- function(year_unity = NULL, include_housing = TRUE) {
     # After package loading this is used to prepare CPI data from the package environment as a tibble
 
+    if (is.null(year_unity)) {
+        year_unity <- lubridate::year(lubridate::today())
+    }
+
     cpi <- if (include_housing) cpi_housing_yearly else cpi_no_housing_yearly
+
+    cpi <- cpi / cpi[names(cpi) == as.character(year_unity)]
+
     out <- tibble::tibble(
-        year = names(cpi),
+        year = as.integer(names(cpi)),
         cpi = unname(cpi)
     )
 

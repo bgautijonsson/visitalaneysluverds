@@ -34,7 +34,9 @@ devtools::install_github("bgautijonsson/visitalaneysluverds")
 
 ### CPI table
 
-```{r example}
+#### Monthly CPI
+
+```{r}
 library(visitalaneysluverds)
 d <- vnv()
 
@@ -53,7 +55,29 @@ d <- vnv(date_unity = as.Date("2018-01-1"))
 plot(cpi ~ date, data = d, type = "l")
 ```
 
+#### Yearly CPI
+
+```{r}
+d <- vnv_yearly()
+
+d
+```
+
+
+```{r}
+plot(cpi ~ year, data = d, type = "l")
+```
+
+You can input a date on which the CPI should be equal to 1. The date has to be between 1988-05-01 and the month preceding the current month. If no date is input the CPI will be equal to 1 on 1988-05-01.
+
+```{r}
+d <- vnv_yearly(year_unity = 2002)
+plot(cpi ~ year, data = d, type = "l")
+```
+
 ### Performing CPI adjustments
+
+#### Monthly prices
 
 The package offers use of the function `vnv_convert()` to convert prices to a common CPI standard.
 
@@ -65,10 +89,28 @@ d <- data.frame(
     price = price
 )
 
-d$price_2020_01_01 <- vnv_convert(d$price, d$date, convert_date = as.Date("2020-01-01"))
+d$price_2020_01_01 <- vnv_convert(d$price, d$date, date_unity = as.Date("2020-01-01"))
 
 d
 ```
 
 
 The function `vnv_convert()` works because the package downloads CPI data from Statistics Iceland once per session and makes it available to internal functions, allowing the user to use the most recent CPI data to compare prices if needed.
+
+#### Yearly prices
+
+The `vnv_convert()` function detects whether the `obs_date` and `date_unity` variables have the class `Date` or `integer` and automatically performs the right type of CPI adjustmeny (monthly/yearly) for your data.
+
+```{r}
+price <- c(1, 2, 3, 4, 5)
+year <- c(2011, 2012, 2013, 2014, 2015)
+d <- data.frame(
+    year = year,
+    price = price
+)
+
+d$price_2020 <- vnv_convert(d$price, d$year, date_unity = 2020)
+
+d
+```
+
